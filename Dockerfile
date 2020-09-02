@@ -18,3 +18,30 @@ WORKDIR /spotifyd
 RUN git checkout $VERSION
 
 RUN cargo build --release
+
+FROM rust:1.46.0-slim-buster as final
+
+ARG USER
+ARG UID
+ARG DIR
+
+LABEL maintainer="nolim1t <hello@nolim1t.co>"
+
+RUN adduser --disabled-password \
+            --home "$DIR" \
+            --uid $UID \
+            --gecos "" \
+            "$USER"
+
+
+
+USER $USER
+
+# For spotifyd config
+RUN mkdir -p "$DIR/.config/"
+
+COPY --from=builder /spotifyd/target/release/spotifyd /usr/local/bin
+COPY --from=builder /usr/lib /usr/lib
+
+
+ENTRYPOINT ["spotifyd"]
