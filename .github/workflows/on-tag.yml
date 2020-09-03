@@ -10,7 +10,7 @@ on:
 jobs:
         build:
                 runs-on: ubuntu-18.04
-                name: Build Specter Desktop
+                name: Build Spotifyd
                 steps:
                         - name: Setup Environment
                           run: echo ::set-env name=TAG::${GITHUB_REF/refs\/tags\//}
@@ -52,7 +52,7 @@ jobs:
                                   --cache-to "type=local,dest=/tmp/.buildx-cache" \
                                   --build-arg VERSION=$TAG \
                                   --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
-                                  --tag ${{ secrets.DOCKER_HUB_USER }}/specter-desktop:$TAG \
+                                  --tag ${{ secrets.DOCKER_HUB_USER }}/spotifyd:$TAG \
                                   --output "type=registry" .
 
                         - name: build against latest (spotifyd)
@@ -62,6 +62,6 @@ jobs:
                                   --cache-to "type=local,dest=/tmp/.buildx-cache" \
                                   --build-arg VERSION=$TAG \
                                   --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
-                                  --tag ${{ secrets.DOCKER_HUB_USER }}/specter-desktop:latest \
+                                  --tag ${{ secrets.DOCKER_HUB_USER }}/spotifyd:latest \
                                   --output "type=registry" .
                         
